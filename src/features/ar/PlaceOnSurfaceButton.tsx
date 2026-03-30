@@ -49,7 +49,7 @@ export function PlaceOnSurfaceButton() {
   }
 
   return (
-    <div className="ar-place-row">
+    <div className="ar-place-row ar-place-row--smart-next">
       <TouchButton type="button" variant="secondary" onClick={() => void handlePlace()}>
         Place on surface
       </TouchButton>

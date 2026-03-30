@@ -3,8 +3,9 @@ type ProductInfoOverlayProps = {
   widthCm: number;
   depthCm: number;
   heightCm: number;
-  /** One-line tip about saving a view (Phase 5). */
   showScreenshotTip?: boolean;
+  /** Tighter summary when dock space is scarce (immersive overlay). */
+  density?: 'comfortable' | 'compact';
 };
 
 function formatCm(value: number) {
@@ -17,7 +18,24 @@ export function ProductInfoOverlay({
   depthCm,
   heightCm,
   showScreenshotTip = true,
+  density = 'comfortable',
 }: ProductInfoOverlayProps) {
+  if (density === 'compact') {
+    return (
+      <aside
+        className="product-info product-info--compact"
+        aria-label={`${name}, ${widthCm} by ${depthCm} by ${heightCm} centimeters`}
+      >
+        <div className="product-info__row">
+          <span className="product-info__name-compact">{name}</span>
+          <span className="product-info__dims-inline">
+            {widthCm} × {depthCm} × {heightCm} cm
+          </span>
+        </div>
+      </aside>
+    );
+  }
+
   return (
     <aside className="product-info" aria-label="Product dimensions">
       <h2 className="product-info__name">{name}</h2>

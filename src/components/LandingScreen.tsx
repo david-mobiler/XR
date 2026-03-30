@@ -12,6 +12,7 @@ type LandingScreenProps = {
 export function LandingScreen({ arSupport, secureContext, onStartAR }: LandingScreenProps) {
   const checking = arSupport === 'checking';
   const unsupported = arSupport === 'unsupported';
+  const startLabel = unsupported ? 'Open 3D workspace' : checking ? 'Checking support…' : 'Start AR';
 
   return (
     <div className="landing">
@@ -44,10 +45,19 @@ export function LandingScreen({ arSupport, secureContext, onStartAR }: LandingSc
       ) : null}
 
       <div className="landing__footer">
-        <ARSessionButton onClick={onStartAR} disabled={checking} label={checking ? 'Checking support…' : 'Start AR'} />
+        <ARSessionButton onClick={onStartAR} disabled={checking} label={startLabel} />
         <p className="landing__hint">
-          After tapping Start AR, use <strong>Enter immersive AR</strong> on the next screen (required separate gesture
-          on many browsers).
+          {unsupported ? (
+            <>
+              Immersive AR will be hidden on the next screen — you can still use the <strong>room camera</strong> and
+              rotate the model.
+            </>
+          ) : (
+            <>
+              On the next screen, use <strong>Enter immersive AR</strong> on a supported phone (often a second tap is
+              required by the browser).
+            </>
+          )}
         </p>
       </div>
     </div>

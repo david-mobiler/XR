@@ -5,9 +5,11 @@ import { arXRStore } from './xrStore';
 
 type EnterImmersiveARButtonProps = {
   disabled?: boolean;
+  /** Visual emphasis when this is the suggested next step. */
+  recommended?: boolean;
 };
 
-export function EnterImmersiveARButton({ disabled }: EnterImmersiveARButtonProps) {
+export function EnterImmersiveARButton({ disabled, recommended }: EnterImmersiveARButtonProps) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -24,7 +26,7 @@ export function EnterImmersiveARButton({ disabled }: EnterImmersiveARButtonProps
   }
 
   return (
-    <div className="enter-ar">
+    <div className={`enter-ar ${recommended ? 'enter-ar--recommended' : ''}`.trim()}>
       <TouchButton onClick={() => void handleEnter()} disabled={disabled || busy}>
         {busy ? 'Starting…' : 'Enter immersive AR'}
       </TouchButton>

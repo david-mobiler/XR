@@ -16,6 +16,7 @@ export function ARViewport({ overlayChildren }: ARViewportProps) {
       camera={{ fov: 50, near: 0.01, far: 200 }}
       gl={{ alpha: true, antialias: true, powerPreference: 'high-performance' }}
       dpr={[1, 2]}
+      resize={{ scroll: true, debounce: { scroll: 50, resize: 0 } }}
     >
       <XR store={arXRStore}>
         <ARSceneContent />
