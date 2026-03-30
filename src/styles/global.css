@@ -9,22 +9,24 @@
 html {
   margin: 0;
   height: 100%;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
-  min-height: 100%;
+  height: 100%;
   min-height: 100dvh;
-  min-height: -webkit-fill-available;
+  overflow-x: hidden;
 }
 
 #root {
   margin: 0;
-  min-height: 100%;
+  height: 100%;
   min-height: 100dvh;
-  min-height: -webkit-fill-available;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -223,12 +225,12 @@ button:disabled {
 /* AR shell (placeholder session UI) */
 .ar-shell {
   flex: 1;
+  height: 100%;
   display: flex;
   flex-direction: column;
   min-height: 0;
   width: 100%;
   min-height: 100dvh;
-  min-height: -webkit-fill-available;
   background: var(--color-bg);
 }
 
@@ -282,7 +284,7 @@ button:disabled {
 .ar-shell__header-actions {
   flex-shrink: 0;
   align-self: center;
-  max-width: 58%;
+  max-width: min(58%, 420px);
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -388,11 +390,8 @@ button:disabled {
 
 .ar-shell__camera-bg {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: var(--safe-left);
-  right: var(--safe-right);
-  width: auto;
+  inset: 0;
+  width: 100%;
   height: 100%;
   object-fit: cover;
   z-index: 0;
@@ -413,8 +412,6 @@ button:disabled {
   min-height: 0;
   flex: 1;
   box-sizing: border-box;
-  padding-left: var(--safe-left);
-  padding-right: var(--safe-right);
 }
 
 .ar-viewport__canvas {
@@ -453,8 +450,8 @@ button:disabled {
 /* WebXR DOM overlay root (created by @react-three/xr); visible only during immersive session */
 .xr-dom-overlay-root {
   position: fixed;
-  left: var(--safe-left);
-  right: var(--safe-right);
+  left: 0;
+  right: 0;
   bottom: 0;
   z-index: 1000;
   pointer-events: none;
@@ -626,22 +623,25 @@ button:disabled {
 
 /* AR controls */
 .ar-controls {
-  display: flex;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: 1fr 1.25fr 1fr;
+  gap: 8px;
   padding: 12px max(16px, var(--safe-left)) calc(12px + var(--safe-bottom)) max(16px, var(--safe-right));
   background: var(--color-surface-elevated);
   border-top: 1px solid var(--color-border);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .ar-controls .touch-button {
-  flex: 1;
+  width: 100%;
+  min-width: 0;
   min-height: 48px;
   font-size: 0.9rem;
 }
 
 .ar-controls .touch-button--icon {
-  flex: 0 0 auto;
-  min-width: 52px;
+  min-width: 0;
   padding: 12px;
 }
 
