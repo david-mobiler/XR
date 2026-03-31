@@ -1,7 +1,7 @@
-﻿import type { Screen } from '../App';
+type LegacyScreen = 'browse' | 'ar';
 
 type ARScreenProps = {
-  onNavigate: (screen: Screen) => void;
+  onNavigate: (screen: LegacyScreen) => void;
 };
 
 function ChairScene() {
@@ -84,4 +84,3 @@ export function ARScreen({ onNavigate }: ARScreenProps) {
     </div>
   );
 }
-

@@ -1,7 +1,7 @@
-﻿import type { Screen } from '../App';
+type LegacyScreen = 'browse' | 'ar';
 
 type BrowseScreenProps = {
-  onNavigate: (screen: Screen) => void;
+  onNavigate: (screen: LegacyScreen) => void;
 };
 
 const products = [
@@ -78,4 +78,3 @@ export function BrowseScreen({ onNavigate }: BrowseScreenProps) {
     </div>
   );
 }
-
