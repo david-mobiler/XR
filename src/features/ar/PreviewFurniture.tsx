@@ -7,6 +7,7 @@ import { FurnitureVisual } from './FurnitureVisual';
 /** Non-immersive preview: fixed pose + shared Y rotation from controls. */
 export function PreviewFurniture() {
   const rotationY = usePlacementStore((s) => s.rotationY);
+  const previewZoom = usePlacementStore((s) => s.previewZoom);
   const camera = useThree((s) => s.camera);
   const size = useThree((s) => s.size);
   const modelRef = useRef<import('three').Group>(null);
@@ -26,13 +27,13 @@ export function PreviewFurniture() {
     const hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
     const fitHeightDistance = bounds.y / (2 * Math.tan(vFov / 2));
     const fitWidthDistance = bounds.x / (2 * Math.tan(hFov / 2));
-    const distance = Math.max(fitHeightDistance, fitWidthDistance) * 1.2;
+    const distance = Math.max(fitHeightDistance, fitWidthDistance) * 1.2 * previewZoom;
 
     const targetY = center.y + bounds.y * 0.08;
     camera.position.set(center.x, targetY, center.z + distance);
     camera.lookAt(center.x, targetY, center.z);
     camera.updateProjectionMatrix();
-  }, [camera, rotationY, size.width, size.height]);
+  }, [camera, previewZoom, rotationY, size.width, size.height]);
 
   return (
     <group position={[0, 0, -0.65]} rotation={[0, rotationY, 0]}>

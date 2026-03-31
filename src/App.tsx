@@ -11,7 +11,13 @@ import { EnterImmersiveARButton } from './features/ar/EnterImmersiveARButton';
 import { PlaceOnSurfaceButton } from './features/ar/PlaceOnSurfaceButton';
 import { ProductInfoOverlay } from './features/ar/ProductInfoOverlay';
 import { getPrimaryFocus, getSessionHeader } from './features/ar/sessionFlow';
-import { rotateFurnitureLeft, rotateFurnitureRight, usePlacementStore } from './features/ar/placementStore';
+import {
+  rotateFurnitureLeft,
+  rotateFurnitureRight,
+  usePlacementStore,
+  zoomInPreview,
+  zoomOutPreview,
+} from './features/ar/placementStore';
 import { arXRStore } from './features/ar/xrStore';
 import { useImmersiveARSupport } from './hooks/useImmersiveARSupport';
 import { useWebCamera } from './hooks/useWebCamera';
@@ -43,8 +49,11 @@ function ARDockContent({
         onReset={resetPlacement}
         onRotateLeft={rotateFurnitureLeft}
         onRotateRight={rotateFurnitureRight}
+        onZoomIn={zoomInPreview}
+        onZoomOut={zoomOutPreview}
         interactionsDisabled={variant === 'immersive' && !placementActive}
         resetDisabled={variant === 'preview' || !placementActive}
+        zoomDisabled={variant !== 'preview'}
       />
     </>
   );
@@ -113,12 +122,28 @@ export default function App() {
   }, [cameraActive, clearCameraError, startCamera, stopCamera]);
 
   if (view === 'landing') {
+    const handleStartAR = () => {
+      setView('ar');
+    };
+
+    const handleStartFallbackAR = () => {
+      clearCameraError();
+      setView('ar');
+      void startCamera();
+    };
+
     return (
-      <LandingScreen arSupport={arSupport} secureContext={secureContext} onStartAR={() => setView('ar')} />
+      <LandingScreen
+        arSupport={arSupport}
+        secureContext={secureContext}
+        onStartAR={handleStartAR}
+        onStartFallbackAR={handleStartFallbackAR}
+      />
     );
   }
 
   const showXRStrip = !immersiveSupported && !sessionActive;
+  const showFallbackActive = !immersiveSupported && cameraActive && !sessionActive;
 
   return (
     <div className="ar-shell">
@@ -156,6 +181,7 @@ export default function App() {
         cameraError={!sessionActive ? cameraError : null}
         onDismissCameraError={clearCameraError}
         showXRUnavailable={showXRStrip}
+        showFallbackActive={showFallbackActive}
       />
 
       <main className="ar-shell__main ar-shell__main--with-camera">

@@ -1,15 +1,22 @@
 import { ARSessionButton } from '../features/ar/ARSessionButton';
 import { UnsupportedMessage } from '../features/ar/UnsupportedMessage';
 import type { ARSupportState } from '../utils/xr';
+import { TouchButton } from './TouchButton';
 import { OnboardingHint } from './OnboardingHint';
 
 type LandingScreenProps = {
   arSupport: ARSupportState;
   secureContext: boolean;
   onStartAR: () => void;
+  onStartFallbackAR?: () => void;
 };
 
-export function LandingScreen({ arSupport, secureContext, onStartAR }: LandingScreenProps) {
+export function LandingScreen({
+  arSupport,
+  secureContext,
+  onStartAR,
+  onStartFallbackAR,
+}: LandingScreenProps) {
   const checking = arSupport === 'checking';
   const unsupported = arSupport === 'unsupported';
   const startLabel = unsupported ? 'Open 3D workspace' : checking ? 'Checking support…' : 'Start AR';
@@ -46,6 +53,13 @@ export function LandingScreen({ arSupport, secureContext, onStartAR }: LandingSc
 
       <div className="landing__footer">
         <ARSessionButton onClick={onStartAR} disabled={checking} label={startLabel} />
+        {unsupported ? (
+          <div className="landing__fallback-cta">
+            <TouchButton type="button" variant="secondary" onClick={onStartFallbackAR}>
+              Start fallback AR (camera)
+            </TouchButton>
+          </div>
+        ) : null}
         <p className="landing__hint">
           {unsupported ? (
             <>
